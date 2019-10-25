@@ -12,8 +12,8 @@ public class Game {
     private String id;
     private String title;
     private String creator;
-    @DateTimeFormat(pattern = "yyyy/mm/dd")
-    private Date created;
+    private String imageUrl;
+    private String description;
 
     public String getId() {
         return id;
@@ -39,11 +39,19 @@ public class Game {
         this.creator = creator;
     }
 
-    public Date getCreated() {
-        return created;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
