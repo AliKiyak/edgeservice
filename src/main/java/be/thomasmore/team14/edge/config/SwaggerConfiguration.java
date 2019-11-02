@@ -1,3 +1,4 @@
+/**
 package be.thomasmore.team14.edge.config;
 
 import org.springframework.context.annotation.Bean;
@@ -21,3 +22,5 @@ public class SwaggerConfiguration {
                 .build();
     }
 }
+ **/
+
