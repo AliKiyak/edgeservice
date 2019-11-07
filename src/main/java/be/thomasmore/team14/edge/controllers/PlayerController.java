@@ -5,10 +5,14 @@ import be.thomasmore.team14.edge.models.Player;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.GenericSignatureFormatError;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -49,5 +53,16 @@ public class PlayerController {
         return player.get(0);
     }
 
-//    @PostMapping("/addplayer")
+    @PostMapping("/addplayer")
+    public ResponseEntity<String> postPlayer(@RequestBody Player player) {
+        List<HttpMessageConverter<?>> list = new ArrayList<>();
+        list.add(new MappingJackson2HttpMessageConverter());
+        restTemplate.setMessageConverters(list);
+
+        ResponseEntity<Player> result = restTemplate.postForEntity(
+                "http://player-service/players/", player, Player.class
+        );
+
+        return ResponseEntity.ok().build();
+    }
 }
