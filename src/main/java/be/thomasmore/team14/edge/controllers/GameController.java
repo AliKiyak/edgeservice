@@ -66,7 +66,6 @@ public class GameController {
                 "http://game-service/games/", game, Game.class
         );
 
-
         return ResponseEntity.ok().build();
     }
 }

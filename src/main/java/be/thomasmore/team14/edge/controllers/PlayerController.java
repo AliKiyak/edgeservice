@@ -65,4 +65,16 @@ public class PlayerController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/players/filter/{gamertag}")
+    public List<Player> getFilteredPlayers(@PathVariable("gamertag") String gamertag) {
+        GenericResponseWrapper wrapper = restTemplate.getForObject(
+                "http://player-service/players/search/findPlayerByGamerTagContainingIgnoreCase?gamertag=" + gamertag , GenericResponseWrapper.class
+        );
+
+        List<Player> players = objectMapper.convertValue(wrapper.get_embedded().get("players"), new TypeReference<List<Player>>() {
+        });
+
+        return players;
+    }
 }
