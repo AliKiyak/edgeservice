@@ -49,12 +49,11 @@ public class GameController {
     @GetMapping("/detail/{gameid}")
     public Game getGame(@PathVariable("gameid") String gameId) {
 
-        GenericResponseWrapper wrapper = restTemplate.getForObject(
-                "http://game-service/games/search/findGameById?id=" + gameId, GenericResponseWrapper.class);
+        Game game = restTemplate.getForObject(
+                "http://game-service/games/search/findGameById?id=" + gameId, Game.class);
 
-        List<Game> games = objectMapper.convertValue(wrapper.get_embedded().get("games"), new TypeReference<List<Game>>() {});
 
-        return games.get(0);
+        return game;
     }
 
     @PostMapping("/addgame")

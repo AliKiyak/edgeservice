@@ -17,6 +17,7 @@ public class TeamWithGame {
 
     }
     public TeamWithGame(Team team, String game) {
+        this.id = team.getId();
         this.name = team.getName();
         this.owner = team.getOwner();
         this.description = team.getDescription();
