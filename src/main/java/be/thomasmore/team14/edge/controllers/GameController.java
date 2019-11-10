@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -67,4 +68,24 @@ public class GameController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/deletegame/{gameid}")
+    public ResponseEntity deleteGameAndAssociations(@PathVariable("gameid") String gameid) {
+
+        try {
+            restTemplate.delete("http://team-service/teams/search/deleteTeamsByGameId?gameid" + gameid);
+
+        } catch (final HttpClientErrorException e){
+            System.out.println(e);
+        }
+
+        try {
+            restTemplate.delete("http://tournament-service/tournaments/search/deleteTournamentsByGameId?gameid" + gameid);
+        } catch (final HttpClientErrorException e){
+            System.out.println(e);
+        }
+        restTemplate.delete("http://game-service/games/" + gameid);
+        return ResponseEntity.ok().build();
+    }
+
 }
