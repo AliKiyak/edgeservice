@@ -1,16 +1,13 @@
 package be.thomasmore.team14.edge.controllers;
 
-import be.thomasmore.team14.edge.models.Game;
-import be.thomasmore.team14.edge.models.GenericResponseWrapper;
-import be.thomasmore.team14.edge.models.Team;
-import be.thomasmore.team14.edge.models.TeamWithGame;
+import be.thomasmore.team14.edge.models.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -55,4 +52,6 @@ public class TeamController {
         }
         return returnList;
     }
+
+
 }

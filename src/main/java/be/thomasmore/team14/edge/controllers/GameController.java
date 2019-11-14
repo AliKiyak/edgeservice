@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -49,12 +50,11 @@ public class GameController {
     @GetMapping("/detail/{gameid}")
     public Game getGame(@PathVariable("gameid") String gameId) {
 
-        GenericResponseWrapper wrapper = restTemplate.getForObject(
-                "http://game-service/games/search/findGameById?id=" + gameId, GenericResponseWrapper.class);
+        Game game = restTemplate.getForObject(
+                "http://game-service/games/search/findGameById?id=" + gameId, Game.class);
 
-        List<Game> games = objectMapper.convertValue(wrapper.get_embedded().get("games"), new TypeReference<List<Game>>() {});
 
-        return games.get(0);
+        return game;
     }
 
     @PostMapping("/addgame")
@@ -66,7 +66,26 @@ public class GameController {
                 "http://game-service/games/", game, Game.class
         );
 
-
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/deletegame/{gameid}")
+    public ResponseEntity deleteGameAndAssociations(@PathVariable("gameid") String gameid) {
+
+        try {
+            restTemplate.delete("http://team-service/teams/search/deleteTeamsByGameId?gameid" + gameid);
+
+        } catch (final HttpClientErrorException e){
+            System.out.println(e);
+        }
+
+        try {
+            restTemplate.delete("http://tournament-service/tournaments/search/deleteTournamentsByGameId?gameid" + gameid);
+        } catch (final HttpClientErrorException e){
+            System.out.println(e);
+        }
+        restTemplate.delete("http://game-service/games/" + gameid);
+        return ResponseEntity.ok().build();
+    }
+
 }
