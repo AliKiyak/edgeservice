@@ -53,13 +53,14 @@ public class TeamController {
         return returnList;
     }
     @GetMapping("/detail/{teamid}")
-    public Team getTeam(@PathVariable("teamid") String teamId) {
+    public TeamWithGame getTeam(@PathVariable("teamid") String teamId) {
 
         Team team = restTemplate.getForObject(
                 "http://team-service/teams/search/findTeamById?id=" + teamId, Team.class);
+        Game game = restTemplate.getForObject("http://game-service/games/" + team.getGameId(), Game.class);
 
-
-        return team;
+        TeamWithGame returnteam = new TeamWithGame(team, game.getTitle());
+        return returnteam;
     }
     @PostMapping("/addteam")
     public ResponseEntity<String> postGame(@RequestBody Team team){
