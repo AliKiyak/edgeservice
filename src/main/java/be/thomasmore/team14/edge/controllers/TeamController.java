@@ -74,5 +74,12 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete/{teamid}")
+    public ResponseEntity deleteTeam(@PathVariable("teamid") String teamid) {
+        restTemplate.delete("http://team-service/teams/" + teamid);
+
+        return ResponseEntity.ok().build();
+    }
+
 
 }
