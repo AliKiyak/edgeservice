@@ -52,6 +52,34 @@ public class TeamController {
         }
         return returnList;
     }
+    @GetMapping("/detail/{teamid}")
+    public TeamWithGame getTeam(@PathVariable("teamid") String teamId) {
+
+        Team team = restTemplate.getForObject(
+                "http://team-service/teams/search/findTeamById?id=" + teamId, Team.class);
+        Game game = restTemplate.getForObject("http://game-service/games/" + team.getGameId(), Game.class);
+
+        TeamWithGame returnteam = new TeamWithGame(team, game.getTitle());
+        return returnteam;
+    }
+    @PostMapping("/addteam")
+    public ResponseEntity<String> postGame(@RequestBody Team team){
+        List<HttpMessageConverter<?>> list = new ArrayList<>();
+        list.add(new MappingJackson2HttpMessageConverter());
+        restTemplate.setMessageConverters(list);
+        ResponseEntity<Team> result = restTemplate.postForEntity(
+                "http://team-service/teams/", team, Team.class
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{teamid}")
+    public ResponseEntity deleteTeam(@PathVariable("teamid") String teamid) {
+        restTemplate.delete("http://team-service/teams/" + teamid);
+
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/{id}")
     public Team getTeamById(@PathVariable("id") String id) {

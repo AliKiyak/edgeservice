@@ -97,6 +97,18 @@ public class PlayerController {
         return players;
     }
 
+    @GetMapping("players/team/{teamid}")
+    public List<Player> getPlayersOfTeam(@PathVariable("teamid") String teamid) {
+        GenericResponseWrapper wrapper = restTemplate.getForObject(
+                "http://player-service/players/search/findPlayersByTeamId?teamid=" + teamid , GenericResponseWrapper.class
+        );
+
+        List<Player> players = objectMapper.convertValue(wrapper.get_embedded().get("players"), new TypeReference<List<Player>>() {
+        });
+
+        return players;
+    }
+
     @DeleteMapping("/deleteplayer/{playerid}")
     public ResponseEntity deletePlayer(@PathVariable("playerid") String playerid) {
 
