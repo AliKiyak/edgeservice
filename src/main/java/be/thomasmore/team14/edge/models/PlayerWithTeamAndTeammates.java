@@ -3,9 +3,11 @@ package be.thomasmore.team14.edge.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Player {
+public class PlayerWithTeamAndTeammates {
     private int id;
     private String gamerTag;
     private String realName;
@@ -15,7 +17,27 @@ public class Player {
     private String keyboard;
     private String headset;
     private String picture;
-    private String teamId;
+    private String teamName;
+    private String teamLogo;
+    private List<Player> teammembers;
+
+    public PlayerWithTeamAndTeammates() {
+    }
+
+    public PlayerWithTeamAndTeammates(Player player, String teamName, String teamLogo, List<Player> teammembers) {
+        this.id = player.getId();
+        this.gamerTag = player.getGamerTag();
+        this.realName = player.getRealName();
+        this.age = player.getAge();
+        this.mouse = player.getMouse();
+        this.mousepad = player.getMousepad();
+        this.keyboard = player.getKeyboard();
+        this.headset = player.getHeadset();
+        this.picture = player.getPicture();
+        this.teamName = teamName;
+        this.teamLogo = teamLogo;
+        this.teammembers = teammembers;
+    }
 
     public int getId() {
         return id;
@@ -23,6 +45,22 @@ public class Player {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getTeamLogo() {
+        return teamLogo;
+    }
+
+    public void setTeamLogo(String teamLogo) {
+        this.teamLogo = teamLogo;
     }
 
     public String getGamerTag() {
@@ -87,13 +125,5 @@ public class Player {
 
     public void setPicture(String picture) {
         this.picture = picture;
-    }
-
-    public String getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
     }
 }

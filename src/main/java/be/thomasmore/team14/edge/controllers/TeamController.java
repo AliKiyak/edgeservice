@@ -53,5 +53,16 @@ public class TeamController {
         return returnList;
     }
 
+    @GetMapping("/{id}")
+    public Team getTeamById(@PathVariable("id") String id) {
+        GenericResponseWrapper wrapper = restTemplate.getForObject(
+                "http://team-service/teams/search/findTeamById?id=" + id, GenericResponseWrapper.class);
+
+        List<Team> team = objectMapper.convertValue(wrapper.get_embedded().get("teams"), new TypeReference<List<Team>>() {
+        });
+
+        return team.get(0);
+    }
+
 
 }
