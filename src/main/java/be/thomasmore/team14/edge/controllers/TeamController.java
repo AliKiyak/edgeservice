@@ -81,6 +81,7 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping("/{id}")
     public Team getTeamById(@PathVariable("id") String id) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -92,5 +93,13 @@ public class TeamController {
         return team.get(0);
     }
 
+
+    @PutMapping("editteam/{teamid}")
+    public ResponseEntity<String> editTeam (@PathVariable("teamid") String teamid,
+                                            @RequestBody Team team) {
+        restTemplate.put("http://team-service/teams/" + teamid, team, Team.class);
+
+        return ResponseEntity.ok().build();
+    }
 
 }

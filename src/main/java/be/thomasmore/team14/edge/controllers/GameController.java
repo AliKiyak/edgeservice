@@ -90,4 +90,11 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("editgame/{gameid}")
+    public ResponseEntity<String> editgame (@PathVariable("gameid") String gameId,
+                                            @RequestBody Game game) {
+        restTemplate.put("http://game-service/games/" + gameId, game, Game.class);
+
+        return ResponseEntity.ok().build();
+    }
 }

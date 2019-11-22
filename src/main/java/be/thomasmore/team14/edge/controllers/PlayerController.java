@@ -109,10 +109,20 @@ public class PlayerController {
         return players;
     }
 
+
     @DeleteMapping("/deleteplayer/{playerid}")
     public ResponseEntity deletePlayer(@PathVariable("playerid") String playerid) {
 
         restTemplate.delete("http://player-service/players/" + playerid);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("editplayer/{playerid}")
+    public ResponseEntity<String> editPlayer(@PathVariable("playerid") String playerid,
+                                             @RequestBody Player player) {
+        restTemplate.put("http://player-service/players/" + playerid, player, Player.class);
+
+
         return ResponseEntity.ok().build();
     }
 }
