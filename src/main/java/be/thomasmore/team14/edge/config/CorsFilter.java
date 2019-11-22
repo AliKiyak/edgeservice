@@ -1,3 +1,4 @@
+
 package be.thomasmore.team14.edge.config;
 
 import org.springframework.core.Ordered;
@@ -38,3 +39,4 @@ public class CorsFilter implements Filter {
     }
 
 }
+
