@@ -16,20 +16,21 @@ The edge service connects to the Eureka server, and retrieves data from the micr
 
 ## Context
 The Esports wiki allows you to find every bit of information about the games, teams, tournaments and players that are involved in Esports. You can look at them in detail, add, delete or even edit them. This way you can keep your own database about your favorite esports game / team.
-## Installation
 
+## Installation
 * Clone our project (git clone https://github.com/AliKiyak/edgeservice.git)
 
 ## Usage
-
 Run the project and make sure that the ZuulGateway, Eureka Server and microservices are all running.
+
+### Swagger
+To have a look at the Swagger documentation, you can run the Edge and Eureka server an go to localhost:8050/swagger-ui.html.
 
 ## Client
 
 This is a school project made for the course Java Advanced Topipcs
 
 ## Authors and acknowledgment
-
 * Ali Kiyak (AliKiyak)
 * Bosz Srisan (BoszS)
 * René Vanhoof (VanhoofR)
