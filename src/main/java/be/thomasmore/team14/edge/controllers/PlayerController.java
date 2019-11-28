@@ -6,6 +6,8 @@ import be.thomasmore.team14.edge.models.PlayerWithTeamAndTeammates;
 import be.thomasmore.team14.edge.models.Team;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/player")
+@Api(value="Player controller", description="Actions that involve the Player Entity")
 public class PlayerController {
 
     @Autowired
@@ -27,6 +30,7 @@ public class PlayerController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @ApiOperation(value = "Returns a list of all the players", response = List.class)
     @GetMapping("/players")
     public List<Player> getPlayers() {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -37,6 +41,7 @@ public class PlayerController {
         return players;
     }
 
+    @ApiOperation(value = "Returns a player using their gamertag", response = List.class)
     @GetMapping("player/{gamerTag}")
     public Player getPlayerByGamerTag(@PathVariable("gamerTag") String gamerTag) {
         Player player = restTemplate.getForObject(
@@ -45,6 +50,8 @@ public class PlayerController {
         return player;
     }
 
+
+    @ApiOperation(value = "Returns a certain game using its id", response = List.class)
     @GetMapping("detail/{id}")
     public List<PlayerWithTeamAndTeammates> getPlayerById(@PathVariable("id") String id) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -72,6 +79,7 @@ public class PlayerController {
         return returnList;
     }
 
+    @ApiOperation(value = "Adds a player to the database", response = List.class)
     @PostMapping("/addplayer")
     public ResponseEntity<String> postPlayer(@RequestBody Player player) {
         List<HttpMessageConverter<?>> list = new ArrayList<>();
@@ -85,6 +93,8 @@ public class PlayerController {
         return ResponseEntity.ok().build();
     }
 
+
+    @ApiOperation(value = "Returns a list of players containing a certain string in their gamertag", response = List.class)
     @GetMapping("/players/filter/{gamertag}")
     public List<Player> getFilteredPlayers(@PathVariable("gamertag") String gamertag) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -97,6 +107,7 @@ public class PlayerController {
         return players;
     }
 
+    @ApiOperation(value = "Returns a list of players from a certain team", response = List.class)
     @GetMapping("players/team/{teamid}")
     public List<Player> getPlayersOfTeam(@PathVariable("teamid") String teamid) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -110,6 +121,7 @@ public class PlayerController {
     }
 
 
+    @ApiOperation(value = "Deletes a player from the database", response = List.class)
     @DeleteMapping("/deleteplayer/{playerid}")
     public ResponseEntity deletePlayer(@PathVariable("playerid") String playerid) {
 
@@ -117,6 +129,7 @@ public class PlayerController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "Updates a player in the database using their id", response = List.class)
     @PutMapping("editplayer/{playerid}")
     public ResponseEntity<String> editPlayer(@PathVariable("playerid") String playerid,
                                              @RequestBody Player player) {

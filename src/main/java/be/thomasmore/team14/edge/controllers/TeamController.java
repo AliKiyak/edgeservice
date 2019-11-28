@@ -3,6 +3,8 @@ package be.thomasmore.team14.edge.controllers;
 import be.thomasmore.team14.edge.models.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -15,12 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/team")
+@Api(value="Team controller", description="Actions that involve the Team entity")
 public class TeamController {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private ObjectMapper objectMapper;
 
+    @ApiOperation(value = "Returns a list of all the teams", response = List.class)
     @GetMapping("/teams")
     public List<TeamWithGame> getTeams() {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -37,6 +41,7 @@ public class TeamController {
         return returnList;
     }
 
+    @ApiOperation(value = "Returns teams from a certain game", response = List.class)
     @GetMapping("/game/{gameid}")
     public List<TeamWithGame> getTeamFromCertainGame(@PathVariable("gameid") String gameId) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -52,6 +57,8 @@ public class TeamController {
         }
         return returnList;
     }
+
+    @ApiOperation(value = "Returns a team using its teamid", response = List.class)
     @GetMapping("/detail/{teamid}")
     public TeamWithGame getTeam(@PathVariable("teamid") String teamId) {
 
@@ -62,6 +69,8 @@ public class TeamController {
         TeamWithGame returnteam = new TeamWithGame(team, game.getTitle());
         return returnteam;
     }
+
+    @ApiOperation(value = "Adds a team to the database", response = List.class)
     @PostMapping("/addteam")
     public ResponseEntity<String> postGame(@RequestBody Team team){
         List<HttpMessageConverter<?>> list = new ArrayList<>();
@@ -74,6 +83,8 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+
+    @ApiOperation(value = "Deletes a team from the database", response = List.class)
     @DeleteMapping("/delete/{teamid}")
     public ResponseEntity deleteTeam(@PathVariable("teamid") String teamid) {
         restTemplate.delete("http://team-service/teams/" + teamid);
@@ -82,6 +93,7 @@ public class TeamController {
     }
 
 
+    @ApiOperation(value = "Returns a team using its teamid", response = List.class)
     @GetMapping("/{id}")
     public Team getTeamById(@PathVariable("id") String id) {
         GenericResponseWrapper wrapper = restTemplate.getForObject(
@@ -94,6 +106,7 @@ public class TeamController {
     }
 
 
+    @ApiOperation(value = "Updates a team in the database using its id", response = List.class)
     @PutMapping("editteam/{teamid}")
     public ResponseEntity<String> editTeam (@PathVariable("teamid") String teamid,
                                             @RequestBody Team team) {
