@@ -1,20 +1,33 @@
 package be.thomasmore.team14.edge.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(description = "All details about a player")
 public class Player {
+    @ApiModelProperty(notes = "The database generated player ID")
     private int id;
+    @ApiModelProperty(notes = "The gamertag of the player")
     private String gamerTag;
+    @ApiModelProperty(notes = "The real name of the player")
     private String realName;
+    @ApiModelProperty(notes = "The age of the player")
     private int age;
+    @ApiModelProperty(notes = "The preferred mouse of the player")
     private String mouse;
+    @ApiModelProperty(notes = "The preferred mousepad of the player")
     private String mousepad;
+    @ApiModelProperty(notes = "The preferred keyboard of the player")
     private String keyboard;
+    @ApiModelProperty(notes = "The preferred headset of the player")
     private String headset;
+    @ApiModelProperty(notes = "A link to a picture of the player")
     private String picture;
+    @ApiModelProperty(notes = "The id of the team of the player")
     private String teamId;
 
     public int getId() {
