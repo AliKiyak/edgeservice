@@ -51,9 +51,10 @@ public class PlayerController {
     }
 
 
-    @ApiOperation(value = "Returns a certain game using its id", response = List.class)
+    @ApiOperation(value = "Returns a certain player with its team and teammates using its playerid", response = List.class)
     @GetMapping("detail/{id}")
     public List<PlayerWithTeamAndTeammates> getPlayerById(@PathVariable("id") String id) {
+
         GenericResponseWrapper wrapper = restTemplate.getForObject(
                 "http://player-service/players/search/findPlayerById?id=" + id, GenericResponseWrapper.class);
 
@@ -63,9 +64,8 @@ public class PlayerController {
         List<PlayerWithTeamAndTeammates> returnList = new ArrayList<>();
 
         for (Player player: players) {
-            GenericResponseWrapper wrapper2 = restTemplate.getForObject(
-                    "http://team-service/teams/search/findTeamById?id=" + player.getTeamId(), GenericResponseWrapper.class);
-            List<Team> team = objectMapper.convertValue(wrapper2.get_embedded().get("teams"), new TypeReference<List<Team>>() {});
+
+            Team team = restTemplate.getForObject("http://team-service/teams/search/findTeamById?id=" + player.getTeamId(), Team.class);
 
             GenericResponseWrapper wrapper3 = restTemplate.getForObject(
                     "http://player-service/players/search/findPlayersByTeamId?teamId=" + player.getTeamId(), GenericResponseWrapper.class);
@@ -73,11 +73,12 @@ public class PlayerController {
 
             teammembers.remove(player);
 
-            returnList.add(new PlayerWithTeamAndTeammates(player, team.get(0).getName(), team.get(0).getImageUrl(), teammembers));
+            returnList.add(new PlayerWithTeamAndTeammates(player, team.getName(), team.getImageUrl(), teammembers));
         }
 
         return returnList;
     }
+
 
     @ApiOperation(value = "Adds a player to the database", response = List.class)
     @PostMapping("/addplayer")
